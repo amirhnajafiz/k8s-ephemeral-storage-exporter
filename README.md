@@ -1,2 +1,3 @@
-# insta-dashboard
-Monitor your instagram account with Insta Dashboard.
+# Insta Dashboard
+
+Monitor your instagram account with ```Insta Dashboard```.
