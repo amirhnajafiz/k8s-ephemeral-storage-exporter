@@ -1,0 +1,9 @@
+{
+  "id": "MEDIA_ID",
+  "media_type": "IMAGE or VIDEO or CAROUSEL_ALBUM",
+  "media_url": "URL_TO_MEDIA",
+  "thumbnail_url": "URL_TO_THUMBNAIL",
+  "permalink": "PERMALINK_TO_MEDIA",
+  "timestamp": "TIMESTAMP_OF_MEDIA",
+  // Other media information
+}
