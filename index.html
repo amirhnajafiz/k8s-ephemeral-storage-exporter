@@ -2,25 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Token</title>
+  <title>OAuth 2.0 Example</title>
 </head>
 <body>
+  <label for="clientIdInput">Enter Client ID:</label>
+  <input type="text" id="clientIdInput">
+  <br>
   <button onclick="authenticate()">Authorize</button>
   
   <script>
-    // Replace with your actual client ID and redirect URI
-    const clientID = 'YOUR_CLIENT_ID';
-    const redirectURI = 'YOUR_REDIRECT_URI';
-    const scope = 'SCOPE_REQUIRED'; // Specify the permissions needed
-    
     function authenticate() {
+      const clientID = document.getElementById('clientIdInput').value;
+      const redirectURI = window.location.href; // Get current page URL as the redirect URI
+      const scope = 'user_profile,user_media';
       const authURL = `https://api.instagram.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scope}&response_type=code`;
       
-      // Redirect the user to the authorization URL
       window.location.href = authURL;
     }
     
-    // Function to handle the authorization code exchange
     function exchangeCodeForToken(authorizationCode) {
       fetch(`https://graph.instagram.com/access_token?client_id=${clientID}&redirect_uri=${redirectURI}&client_secret=YOUR_CLIENT_SECRET&code=${authorizationCode}`, {
         method: 'POST'
@@ -33,18 +32,18 @@
       .catch(error => {
         console.error('Error:', error);
       });
+      // Replace YOUR_CLIENT_SECRET and perform the fetch request
     }
     
-    // On page load, check if the URL contains an authorization code
     window.onload = function() {
       const urlParams = new URLSearchParams(window.location.search);
       const authorizationCode = urlParams.get('code');
       
       if (authorizationCode) {
-        // If an authorization code is present in the URL, exchange it for an access token
         exchangeCodeForToken(authorizationCode);
       }
     }
   </script>
 </body>
 </html>
+
