@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>OAuth 2.0 Example</title>
+  <meta charset="UTF-8" />
+  <title>
+    Instagram Token Page
+  </title>
 </head>
 <body>
   <label for="clientIdInput">Enter Client ID:</label>
   <input type="text" id="clientIdInput">
-  <br>
+  <br />
+  <label for="clientSecretInput">Enter Client Secret:</label>
+  <input type="text" id="clientSecretInput">
+  <br />
   <button onclick="authenticate()">Authorize</button>
   
   <script>
     function authenticate() {
       const clientID = document.getElementById('clientIdInput').value;
+      const clientSecret = document.getElementById('clientSecretInput').value;
       const redirectURI = window.location.href; // Get current page URL as the redirect URI
       const scope = 'user_profile,user_media';
       const authURL = `https://api.instagram.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scope}&response_type=code`;
@@ -21,7 +27,7 @@
     }
     
     function exchangeCodeForToken(authorizationCode) {
-      fetch(`https://graph.instagram.com/access_token?client_id=${clientID}&redirect_uri=${redirectURI}&client_secret=YOUR_CLIENT_SECRET&code=${authorizationCode}`, {
+      fetch(`https://graph.instagram.com/access_token?client_id=${clientID}&redirect_uri=${redirectURI}&client_secret=${clientSecret}&code=${authorizationCode}`, {
         method: 'POST'
       })
       .then(response => response.json())
