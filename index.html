@@ -33,27 +33,23 @@
   // Function to handle redirect after user authorization
   function handleRedirect() {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-
-    if (code) {
-      // Use the obtained code to exchange for an access token
-      exchangeCodeForToken(code);
+    const authorizationCode = urlParams.get('authorization_code');
+    if (authorizationCode) {
+      exchangeCodeForToken(authorizationCode);
     } else {
-      // Handle authorization error or redirect to the login page again
-      // Redirect to login again or show an error message
-      console.error('Authorization error');
+      console.error('Authorization error: No authorization code found');
     }
   }
 
-  // Function to exchange code for access token
-  function exchangeCodeForToken(code) {
+  // Function to exchange authorization code for access token
+  function exchangeCodeForToken(authorizationCode) {
     const form = document.getElementById('appForm');
     const clientId = form.elements['clientId'].value;
     const clientSecret = form.elements['clientSecret'].value;
     const redirectUri = window.location.href; // Dynamic redirect URI from current URL
 
-    // Make a POST request to exchange the code for an access token
-    fetch(`https://graph.facebook.com/v13.0/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&code=${code}`)
+    // Make a POST request to exchange the authorization code for an access token
+    fetch(`https://graph.facebook.com/v13.0/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&code=${authorizationCode}`)
       .then(response => response.json())
       .then(data => {
         const accessToken = data.access_token;
