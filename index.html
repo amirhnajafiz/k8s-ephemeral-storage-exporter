@@ -16,6 +16,8 @@
   <button onclick="loginWithFacebook()">Login with Facebook</button>
 </form>
 
+<div id="tokenDisplay"></div>
+
 <script>
   function loginWithFacebook() {
     const form = document.getElementById('appForm');
@@ -24,10 +26,8 @@
     const redirectUri = window.location.href; // Dynamic redirect URI from current URL
     const scopes = 'instagram_basic,pages_read_engagement'; // Add necessary scopes
 
-    let address = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
-
     // Open Facebook login dialog
-    window.location = address;
+    window.location.href = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
   }
 
   // Function to handle redirect after user authorization
@@ -57,13 +57,17 @@
       .then(response => response.json())
       .then(data => {
         const accessToken = data.access_token;
-        // Use the obtained access token for API calls
-        console.log('Access Token:', accessToken);
-        // You can now use this token to access Instagram Business Discovery endpoints
+        displayAccessToken(accessToken);
       })
       .catch(error => {
         console.error('Error exchanging code for token:', error);
       });
+  }
+
+  // Function to display access token
+  function displayAccessToken(token) {
+    const tokenDisplay = document.getElementById('tokenDisplay');
+    tokenDisplay.innerHTML = `<strong>Access Token:</strong> ${token}`;
   }
 
   // Call the function to handle the redirect after authorization
