@@ -1,74 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Instagram Business Discovery Access Token</title>
+  <title>
+    Instagram Access Token Retrieval
+  </title>
 </head>
 <body>
-
-<form id="appForm">
+  <h1>Retrieve Instagram Access Token</h1>
   <label for="clientId">Client ID:</label>
-  <input type="text" id="clientId" name="clientId"><br><br>
+  <input type="text" id="clientId" name="clientId"><br />
+  <button onclick="redirectToInstagram()">Authorize</button>
 
-  <button onclick="loginWithFacebook()">Login with Facebook</button>
-</form>
+  <script>
+    function redirectToInstagram() {
+      // Your Instagram app's credentials
+      var clientID = document.getElementById("clientId").value;
+      var redirectURI = window.location.protocol + "//" + window.location.host;
+      var scope = 'user_profile,user_media'; // Add necessary scopes
 
-<div id="tokenDisplay"></div>
+      // Construct the authorization URL
+      var authURL = `https://api.instagram.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scope}&response_type=code`;
 
-<script>
-  function loginWithFacebook() {
-    const form = document.getElementById('appForm');
-    const clientId = form.elements['clientId'].value;
-    const redirectUri = window.location.href; // Dynamic redirect URI from current URL
-    const scopes = 'instagram_basic,pages_read_engagement'; // Add necessary scopes
-
-    // Open Facebook login dialog
-    window.location.href = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
-  }
-
-  // Function to handle redirect after user authorization
-  function handleRedirect() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const secret = urlParams.get('client_secret');
-
-    if (secret) {
-      // Use the obtained code to exchange for an access token
-      exchangeCodeForToken(secret);
-    } else {
-      // Handle authorization error or redirect to the login page again
-      // Redirect to login again or show an error message
-      console.error('Authorization response error');
+      // Redirect the user to Instagram for authorization
+      window.location.href = authURL;
     }
-  }
-
-  // Function to exchange authorization code for access token
-  function exchangeCodeForToken(secret) {
-    const form = document.getElementById('appForm');
-    const clientId = form.elements['clientId'].value;
-    const clientSecret = secret;
-    const redirectUri = window.location.href; // Dynamic redirect URI from current URL
-
-    // Make a GET request to exchange the authorization code for an access token
-    fetch(`https://graph.facebook.com/v13.0/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&grant_type=instagram_basic,pages_read_engagement`)
-      .then(response => response.json())
-      .then(data => {
-        const accessToken = data.access_token;
-        displayAccessToken(accessToken);
-      })
-      .catch(error => {
-        console.error('Error exchanging code for token:', error);
-      });
-  }
-
-  // Function to display access token
-  function displayAccessToken(token) {
-    const tokenDisplay = document.getElementById('tokenDisplay');
-    tokenDisplay.innerHTML = `<strong>Access Token:</strong> ${token}`;
-  }
-
-  // Call the function to handle the redirect after authorization
-  handleRedirect();
-</script>
-
+  </script>
 </body>
 </html>
