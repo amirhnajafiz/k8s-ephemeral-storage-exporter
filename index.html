@@ -15,7 +15,7 @@
     function redirectToInstagram() {
       // Your Instagram app's credentials
       var clientID = document.getElementById("clientId").value;
-      var redirectURI = window.location.protocol + "//" + window.location.host;
+      var redirectURI = window.location.href;
       var scope = 'user_profile,user_media'; // Add necessary scopes
 
       // Construct the authorization URL
