@@ -24,6 +24,8 @@
     const redirectUri = window.location.href; // Dynamic redirect URI from current URL
     const scopes = 'instagram_basic,pages_read_engagement'; // Add necessary scopes
 
+    console.log(redirectUri);
+
     // Open Facebook login dialog
     window.location.href = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
   }
