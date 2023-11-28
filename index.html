@@ -27,13 +27,13 @@
     const scopes = 'instagram_basic,pages_read_engagement'; // Add necessary scopes
 
     // Open Facebook login dialog
-    window.location.href = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
+    window.location.href = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes}`;
   }
 
   // Function to handle redirect after user authorization
   function handleRedirect() {
     const urlParams = new URLSearchParams(window.location.search);
-    const authorizationCode = urlParams.get('authorization_code');
+    const authorizationCode = urlParams.get('code');
     if (authorizationCode) {
       exchangeCodeForToken(authorizationCode);
     } else {
@@ -49,7 +49,7 @@
     const redirectUri = window.location.href; // Dynamic redirect URI from current URL
 
     // Make a POST request to exchange the authorization code for an access token
-    fetch(`https://graph.facebook.com/v13.0/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&code=${authorizationCode}`)
+    fetch(`https://graph.facebook.com/v18.0/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}&code=${authorizationCode}`)
       .then(response => response.json())
       .then(data => {
         const accessToken = data.access_token;
