@@ -6,24 +6,6 @@
   </title>
 </head>
 <body>
-  <h1>Retrieve Instagram Access Token</h1>
-  <label for="clientId">Client ID:</label>
-  <input type="text" id="clientId" name="clientId"><br />
-  <button onclick="redirectToInstagram()">Authorize</button>
 
-  <script>
-    function redirectToInstagram() {
-      // Your Instagram app's credentials
-      var clientID = document.getElementById("clientId").value;
-      var redirectURI = window.location.href;
-      var scope = 'user_profile,user_media'; // Add necessary scopes
-
-      // Construct the authorization URL
-      var authURL = `https://api.instagram.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scope}&response_type=code`;
-
-      // Redirect the user to Instagram for authorization
-      window.location.href = authURL;
-    }
-  </script>
 </body>
 </html>
