@@ -7,11 +7,27 @@
 </head>
 <body>
   <div>
-    <h1>
+    <h3>
       Access your Instagram account by entring your token:
-    </h1>
+    </h3>
     <label for="token">Token: </label>
-    <input id="token" type="text" />
+    <input id="token" type="text" placeholder="****" /> <br /><br />
+    <button onclick="pull()">Fetch</button>
   </div>
+
+  <script>
+    function pull() {
+      const accessToken = document.getElementById("token").value;
+
+      localStorage.setItem("token", accessToken);
+    }
+
+    window.onload = function (_) {
+      let value = localStorage.getItem("token");
+      if (value.length > 0) {
+        document.getElementById("token").value = value;
+      }
+    }
+  </script>
 </body>
 </html>
