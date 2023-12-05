@@ -1,12 +1,10 @@
-const accessToken = 'YOUR_ACCESS_TOKEN';
-const userId = 'YOUR_INSTAGRAM_USER_ID'; // You'll need your Instagram User ID
-
-fetch(`https://graph.instagram.com/${userId}/media?fields=id,media_type,media_url,permalink,timestamp&access_token=${accessToken}`)
-  .then(response => response.json())
-  .then(data => {
-    // Process the retrieved data (data will contain information about your posts)
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+// Function to get Instagram posts
+async function getPosts(accessToken) {
+  try {
+    const response = await fetch(`https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink&access_token=${accessToken}`);
+    const data = await response.json();
+    console.log('Posts Information:', data);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+  }
+}

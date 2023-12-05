@@ -1,3 +1,4 @@
+// Function to get Instagram profile information
 async function getProfileInfo(accessToken) {
     try {
         const response = await fetch(`https://graph.instagram.com/me?fields=id,username&access_token=${accessToken}`);
