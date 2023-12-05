@@ -8,3 +8,5 @@ async function getFollowers(accessToken) {
     console.error('Error fetching followers:', error);
   }
 }
+
+export default getFollowers;
