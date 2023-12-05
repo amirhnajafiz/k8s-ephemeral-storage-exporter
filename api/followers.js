@@ -1,6 +1,5 @@
-const accessToken = 'YOUR_ACCESS_TOKEN';
-
-fetch(`https://graph.instagram.com/me/followers?access_token=${accessToken}`)
+function getFollowers(accessToken) {
+  fetch(`https://graph.instagram.com/me/followers?access_token=${accessToken}`)
   .then(response => response.json())
   .then(data => {
     // Process retrieved follower data
@@ -9,3 +8,4 @@ fetch(`https://graph.instagram.com/me/followers?access_token=${accessToken}`)
   .catch(error => {
     console.error('Error:', error);
   });
+}
