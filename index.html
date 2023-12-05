@@ -15,17 +15,25 @@
     <button onclick="pull()">Fetch</button>
   </div>
 
-  <script type="module" src="./api/index.js"></script>
+  <script src="./api/followers.js"></script>
+  <script src="./api/posts.js"></script>
+  <script src="./api/profile.js"></script>
+  <script src="./api/stories.js"></script>
   <script>
     function pull() {
       const accessToken = document.getElementById("token").value;
 
       localStorage.setItem("token", accessToken);
+      
+      getProfileInfo(accessToken);
+      getFollowers(accessToken);
+      getPosts(accessToken);
+      getStories(accessToken);
     }
 
     window.onload = function (_) {
       let value = localStorage.getItem("token");
-      if (value.length > 0) {
+      if (value == undefined || value.length > 0) {
         document.getElementById("token").value = value;
       }
     }
