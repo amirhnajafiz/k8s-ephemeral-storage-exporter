@@ -13,3 +13,5 @@ async function getStories(accessToken) {
     el.innerText = error;
   }
 }
+
+export default getStories;

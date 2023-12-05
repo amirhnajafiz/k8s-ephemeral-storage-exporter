@@ -13,3 +13,5 @@ async function getProfileInfo(accessToken) {
         el.innerText = error;
     }
 }
+
+export default getProfileInfo;

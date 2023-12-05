@@ -13,3 +13,5 @@ async function getFollowers(accessToken) {
     el.innerText = error;
   }
 }
+
+export default getFollowers;

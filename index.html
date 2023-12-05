@@ -16,11 +16,11 @@
     
     <br /><br />
 
-    <button onclick="pull()">Fetch</button>
+    <button id="fetch">Fetch</button>
 
     <br />
-    <hr />
     <br />
+    <hr />
 
     <div>
       <h4>
@@ -60,22 +60,8 @@
 
   </div>
 
-  <script src="./api/followers.js"></script>
-  <script src="./api/posts.js"></script>
-  <script src="./api/profile.js"></script>
-  <script src="./api/stories.js"></script>
+  <script type="module" src="script.js"></script>
   <script>
-    function pull() {
-      const accessToken = document.getElementById("token").value;
-
-      localStorage.setItem("token", accessToken);
-      
-      getProfileInfo(accessToken);
-      getFollowers(accessToken);
-      getPosts(accessToken);
-      getStories(accessToken);
-    }
-
     window.onload = function (_) {
       let value = localStorage.getItem("token");
       if (value == undefined || value.length > 0) {

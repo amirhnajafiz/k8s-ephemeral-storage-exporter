@@ -13,3 +13,5 @@ async function getPosts(accessToken) {
     el.innerText = error;
   }
 }
+
+export default getPosts;
