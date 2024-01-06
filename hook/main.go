@@ -54,7 +54,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	process(req)
+	go process(req)
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func main() {
@@ -65,6 +67,8 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handler)
+
+	log.Println(fmt.Sprintf("hook server started on %d ...", *PortFlag))
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", *PortFlag), mux); err != nil {
 		panic(err)
