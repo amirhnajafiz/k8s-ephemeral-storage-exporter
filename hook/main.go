@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -37,12 +38,22 @@ func process(r *request) {
 	}
 
 	if err := callback(r.Host, []byte(fmt.Sprintf("server busy time: %ds", r.Data))); err != nil {
-		log.Println(fmt.Errorf("error in callback host=%s\n\t%w", r.Host, err))
+		log.Println(fmt.Errorf("error in callback host: %s\n\t%w", r.Host, err))
 	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	process(nil)
+	req := new(request)
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+
+		log.Println(fmt.Errorf("failed to parse request: %w", err))
+
+		return
+	}
+
+	process(req)
 }
 
 func main() {
