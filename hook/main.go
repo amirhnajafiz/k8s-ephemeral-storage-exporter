@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -57,5 +58,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	var PortFlag = flag.Int("port", 8080, "http port of hook service")
 
+	flag.Parse()
+
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", handler)
+
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", *PortFlag), mux); err != nil {
+		panic(err)
+	}
 }
