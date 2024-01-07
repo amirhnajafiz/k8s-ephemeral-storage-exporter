@@ -44,6 +44,8 @@ func handler(host string, hook string) func(http.ResponseWriter, *http.Request) 
 			return
 		}
 
+		req.Header.Set("Content-Type", "application/json")
+
 		client := &http.Client{}
 
 		if resp, err := client.Do(req); err != nil {
@@ -62,12 +64,14 @@ func handler(host string, hook string) func(http.ResponseWriter, *http.Request) 
 
 func main() {
 	var PortFlag = flag.Int("port", 8081, "http port of app service")
+	var HookAddressFlag = flag.String("hook", "", "hook service address")
+	var HostAddressFlag = flag.String("host", "", "host address")
 
 	flag.Parse()
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handler("", ""))
+	mux.HandleFunc("/", handler(*HostAddressFlag, *HookAddressFlag))
 	mux.HandleFunc("/callback", callback)
 
 	log.Println(fmt.Sprintf("app server started on %d ...", *PortFlag))
