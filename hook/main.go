@@ -28,7 +28,7 @@ func callback(host string, data []byte) error {
 		return err
 	}
 
-	log.Println(fmt.Sprintf("host=%s, code=%d %s", host, resp.StatusCode, resp.Status))
+	log.Println(fmt.Sprintf("host=%s, status code=%d %s", host, resp.StatusCode, resp.Status))
 
 	return nil
 }
