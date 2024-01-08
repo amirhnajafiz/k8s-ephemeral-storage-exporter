@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+
+  hook:
+    container_name: "hook-container"
+    build:
+      context: hook/
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    command:
+      - --port 5001
+    networks:
+      - webhook-net
+
+  app:
+    container_name: "app-container"
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    command:
+      - --port 5000 --host "http://app:5000/callback" --hook "http://hook:5001/"
+    depends_on:
+      - hook
+    networks:
+      - webhook-net
+
+networks:
+  webhook-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.255.0/24
+      driver: default
