@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -16,11 +17,12 @@ type request struct {
 }
 
 func callback(_ http.ResponseWriter, r *http.Request) {
-	array := make([]byte, 0)
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println(fmt.Errorf("failed to read callback body: %w", err))
+	}
 
-	_, _ = r.Body.Read(array)
-
-	log.Println(string(array))
+	log.Println(string(b))
 }
 
 func handler(host string, hook string) func(http.ResponseWriter, *http.Request) {
