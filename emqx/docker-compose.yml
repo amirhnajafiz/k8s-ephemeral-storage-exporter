@@ -3,7 +3,7 @@ services:
   emqx-cluster-1: # emqx node-1
     image: emqx:5.5.0
     container_name: 'emqx-cluster-1-container'
-    hostname: 'emqx-cluster-1-container'
+    hostname: 'emqx1-cluster.emqx.io'
     healthcheck: # health check endpoint
       test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
       interval: 5s
@@ -15,10 +15,6 @@ services:
           - node1.emqx.io
     ports:
       - "1883:1883"
-      - "8083:8083"
-      - "8084:8084"
-      - "8883:8883"
-      - "18083:18083"
     environment:
       - "EMQX_NODE_NAME=emqx@node1.emqx.io"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
@@ -27,7 +23,7 @@ services:
   emqx-cluster-2: # emqx node-2
     image: emqx:5.5.0
     container_name: 'emqx-cluster-2-container'
-    hostname: 'emqx-cluster-2-container'
+    hostname: 'emqx2-cluster.emqx.io'
     healthcheck: # health check endpoint
       test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
       interval: 5s
@@ -39,14 +35,23 @@ services:
           - node2.emqx.io
     ports:
       - "1883:1883"
-      - "8083:8083"
-      - "8084:8084"
-      - "8883:8883"
-      - "18083:18083"
     environment:
       - "EMQX_NODE_NAME=emqx@node2.emqx.io"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
       - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+
+  nginx: # nginx load-balancer
+    image: nginx
+    container_name: nginx-container
+    hostname: nginx-container
+    ports:
+      - "1883:1883"
+    volumes: # nginx config file mounting
+      - $PWD/nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      emqx-bridge:
+        aliases:
+          - lb.nginx
 
 # network config
 networks:
