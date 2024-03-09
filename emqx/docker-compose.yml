@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  emqx-cluster-1: # emqx node-1
+    image: emqx:5.5.0
+    container_name: 'emqx-cluster-1-container'
+    hostname: 'emqx-cluster-1-container'
+    healthcheck: # health check endpoint
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks: # network configuration
+      emqx-bridge:
+        aliases:
+          - node1.emqx.io
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8084:8084"
+      - "8883:8883"
+      - "18083:18083"
+    environment:
+      - "EMQX_NODE_NAME=emqx@node1.emqx.io"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+
+  emqx-cluster-2: # emqx node-2
+    image: emqx:5.5.0
+    container_name: 'emqx-cluster-2-container'
+    hostname: 'emqx-cluster-2-container'
+    healthcheck: # health check endpoint
+      test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks: # network configuration
+      emqx-bridge:
+        aliases:
+          - node2.emqx.io
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8084:8084"
+      - "8883:8883"
+      - "18083:18083"
+    environment:
+      - "EMQX_NODE_NAME=emqx@node2.emqx.io"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+
+# network config
+networks:
+  emqx-bridge:
+    driver: bridge
