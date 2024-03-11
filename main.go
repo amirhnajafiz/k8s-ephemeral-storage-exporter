@@ -2,13 +2,14 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/amirhnajafiz/emqx/internal/config"
 	"github.com/amirhnajafiz/emqx/internal/emqx"
 	"github.com/amirhnajafiz/emqx/internal/model"
 )
 
-func handler(channel chan *model.Message) {
+func defaultHandler(channel chan *model.Message) {
 	go func() {
 		for {
 			msg := <-channel
@@ -31,11 +32,17 @@ func main() {
 	}
 
 	// create a new handler
-	handler(channel)
+	defaultHandler(channel)
 
 	// subscribe on rides
-	client.Subscribe("rides")
+	client.Subscribe(cfg.Topic)
 
-	// publish events
-	client.Publish("new-rider", "rides")
+	// publish events in period
+	tk := time.NewTicker(time.Duration(cfg.Interval) * time.Millisecond)
+	for {
+		select {
+		case <-tk.C:
+			client.Publish(cfg.Message, cfg.Topic)
+		}
+	}
 }
