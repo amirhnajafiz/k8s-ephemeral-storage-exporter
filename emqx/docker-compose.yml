@@ -48,10 +48,32 @@ services:
       - "1883:1883"
     volumes: # nginx config file mounting
       - $PWD/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - emqx-cluster-1
+      - emqx-cluster-2
     networks:
       emqx-bridge:
         aliases:
           - lb.nginx
+
+  emqx-client: # a client for testing the emqx cluster
+    container_name: "emqx-client-container"
+    hostname: "emqx-client-container"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - "C_TOPIC=rides"
+      - "C_MESSAGE=new-ride"
+      - "C_INTERVAL=100"
+      - "EMQX_HOST=lb.nginx"
+      - "EMQX_PROTOCOL=tcp"
+      - "EMQX_PORT=1883"
+      - "EMQX_CLIENT_ID=ridesconsumer"
+      - "EMQX_KEEP_ALIVE=5"
+      - "EMQX_PING_TIMEOUT=5"
+    networks:
+      - emqx-bridge
 
 # network config
 networks:
