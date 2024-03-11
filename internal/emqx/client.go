@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/amirhnajafiz/emqx/internal/model"
+
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -15,14 +17,17 @@ type Client interface {
 	UnSubscribe(topics ...string) mqtt.Token
 }
 
-func New(cfg Config, callback mqtt.MessageHandler) (Client, error) {
+func New(cfg Config, channel chan *model.Message) (Client, error) {
 	// setting debug and error stdout
 	mqtt.DEBUG = log.New(os.Stdout, "emqx", 0)
 	mqtt.ERROR = log.New(os.Stdout, "emqx", 0)
 
 	// get mqtt connection options and
+	opts := cfg.OPTs()
+	opts.SetDefaultPublishHandler(onMessage(channel))
+
 	// create a new client
-	c := mqtt.NewClient(cfg.OPTs(callback))
+	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		return nil, token.Error()
 	}
