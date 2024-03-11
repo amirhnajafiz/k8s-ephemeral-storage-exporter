@@ -60,7 +60,7 @@ services:
     container_name: "emqx-client-container"
     hostname: "emqx-client-container"
     build:
-      context: .
+      context: ../
       dockerfile: Dockerfile
     environment:
       - "C_TOPIC=rides"
