@@ -14,9 +14,9 @@ services:
         aliases:
           - node1.emqx.io
     environment:
-      - "EMQX_NODE_NAME=emqx@node1.emqx.io"
+      - "EMQX_NODE_NAME=emqx@emqx1-cluster.emqx.io"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io]"
 
   emqx-cluster-2: # emqx node-2
     image: emqx:5.5.0
@@ -32,9 +32,9 @@ services:
         aliases:
           - node2.emqx.io
     environment:
-      - "EMQX_NODE_NAME=emqx@node2.emqx.io"
+      - "EMQX_NODE_NAME=emqx@emqx2-cluster.emqx.io"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io]"
 
   nginx: # nginx load-balancer
     image: nginx
