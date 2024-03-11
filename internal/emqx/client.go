@@ -1,6 +1,7 @@
 package emqx
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -29,7 +30,7 @@ func New(cfg Config, channel chan *model.Message) (Client, error) {
 	// create a new client
 	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
-		return nil, token.Error()
+		return nil, fmt.Errorf("failed to connect to `%s`:\n\t%w", cfg.DNS(), token.Error())
 	}
 
 	return client{
