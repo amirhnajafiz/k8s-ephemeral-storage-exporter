@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -27,6 +28,8 @@ func Load() Config {
 	instance.EMQX.ClientID = os.Getenv("EMQX_CLIENT_ID")
 	instance.EMQX.KeepAlive, _ = strconv.Atoi(os.Getenv("EMQX_KEEP_ALIVE"))
 	instance.EMQX.PingTimeout, _ = strconv.Atoi(os.Getenv("EMQX_PING_TIMEOUT"))
+
+	fmt.Println(instance)
 
 	return instance
 }
