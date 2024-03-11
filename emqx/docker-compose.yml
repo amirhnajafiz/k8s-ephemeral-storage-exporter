@@ -16,7 +16,7 @@ services:
     environment:
       - "EMQX_NODE_NAME=emqx@emqx1-cluster.emqx.io"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io]"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io,emqx@emqx3-cluster.emqx.io]"
 
   emqx-cluster-2: # emqx node-2
     image: emqx:5.5.0
@@ -34,7 +34,25 @@ services:
     environment:
       - "EMQX_NODE_NAME=emqx@emqx2-cluster.emqx.io"
       - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io]"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io,emqx@emqx3-cluster.emqx.io]"
+
+  emqx-cluster-3: # emqx node-2
+    image: emqx:5.5.0
+    container_name: 'emqx-cluster-3-container'
+    hostname: 'emqx3-cluster.emqx.io'
+    healthcheck: # health check endpoint
+      test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks: # network configuration
+      emqx-bridge:
+        aliases:
+          - node3.emqx.io
+    environment:
+      - "EMQX_NODE_NAME=emqx@emqx3-cluster.emqx.io"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1-cluster.emqx.io,emqx@emqx2-cluster.emqx.io,emqx@emqx3-cluster.emqx.io]"
 
   nginx: # nginx load-balancer
     image: nginx
@@ -49,6 +67,7 @@ services:
     depends_on:
       - emqx-cluster-1
       - emqx-cluster-2
+      - emqx-cluster-3
     networks:
       emqx-bridge:
         aliases:
@@ -76,4 +95,4 @@ services:
 # network config
 networks:
   emqx-bridge:
-    driver: bridge
+    driver: emqx-net
