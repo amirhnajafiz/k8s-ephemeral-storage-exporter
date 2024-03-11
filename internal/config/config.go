@@ -8,11 +8,18 @@ import (
 )
 
 type Config struct {
-	EMQX emqx.Config
+	Topic    string
+	Message  string
+	Interval int
+	EMQX     emqx.Config
 }
 
 func Load() Config {
 	instance := Config{}
+
+	instance.Topic = os.Getenv("C_TOPIC")
+	instance.Message = os.Getenv("C_MESSAGE")
+	instance.Interval, _ = strconv.Atoi(os.Getenv("C_INTERVAL"))
 
 	instance.EMQX.Host = os.Getenv("EMQX_HOST")
 	instance.EMQX.Protocol = os.Getenv("EMQX_PROTOCOL")
