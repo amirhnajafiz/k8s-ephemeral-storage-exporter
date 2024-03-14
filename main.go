@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -31,21 +30,24 @@ func main() {
 	// connect to emqx cluster
 	client, err := emqx.New(cfg.EMQX, channel)
 	if err != nil {
-		log.Fatal(fmt.Sprintf("failed to connect to emqx cluster: %w", err))
+		log.Fatalf("failed to connect to emqx cluster: %v", err)
 	}
 
 	// create a new handler
 	defaultHandler(channel)
 
-	// subscribe on rides
-	client.Subscribe(cfg.Topic)
+	// subscribe on a topic
+	if token := client.Subscribe(cfg.Topic); token.Wait() || token.Error() != nil {
+		log.Fatalf("failed to subscribe over `%s`: %v", cfg.Topic, token.Error())
+	}
 
 	// publish events in period
 	tk := time.NewTicker(time.Duration(cfg.Interval) * time.Millisecond)
 	for {
-		select {
-		case <-tk.C:
-			client.Publish(cfg.Message, cfg.Topic)
+		<-tk.C
+
+		if token := client.Publish(cfg.Message, cfg.Topic); token.Wait() || token.Error() != nil {
+			log.Printf("failed to publish over `%s`: %v", cfg.Topic, token.Error())
 		}
 	}
 }
