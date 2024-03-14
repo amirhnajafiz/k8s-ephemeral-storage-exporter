@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -9,11 +10,13 @@ import (
 	"github.com/amirhnajafiz/emqx/internal/model"
 )
 
+// defaultHandler is used to handle input messages from
+// subscription channel.
 func defaultHandler(channel chan *model.Message) {
 	go func() {
 		for {
 			msg := <-channel
-			log.Printf("topic:%s\n\t%s\n", msg.Topic, string(msg.Payload))
+			log.Printf("received message from topic: `%s`\n\t%s\n", msg.Topic, string(msg.Payload))
 		}
 	}()
 }
@@ -28,7 +31,7 @@ func main() {
 	// connect to emqx cluster
 	client, err := emqx.New(cfg.EMQX, channel)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(fmt.Sprintf("failed to connect to emqx cluster: %w", err))
 	}
 
 	// create a new handler
