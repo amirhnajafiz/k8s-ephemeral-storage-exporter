@@ -1,6 +1,7 @@
 package fetch
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -8,7 +9,11 @@ import (
 
 // GET performs an HTTP GET request using the provided request object.
 func GET(req *http.Request) (*http.Response, error) {
-	client := &http.Client{}
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

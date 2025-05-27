@@ -15,12 +15,5 @@ func buildHTTPRequest() (*http.Request, error) {
 		return nil, err
 	}
 
-	// Set the Authorization header with the bearer token
-	token, err := k8s.GetKubeletAccessToken()
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Authorization", "Bearer "+token)
-
 	return req, nil
 }
