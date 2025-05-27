@@ -10,7 +10,7 @@ import (
 )
 
 func collectMetrics(m *metrics.Metrics) {
-	resp, err := http.Get(sockerAddress)
+	resp, err := http.Get(kubeletSummaryEndpoint)
 	if err != nil {
 		log.Println("Error fetching stats:", err)
 		return
