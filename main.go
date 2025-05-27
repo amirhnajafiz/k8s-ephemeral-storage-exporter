@@ -7,7 +7,7 @@ import (
 
 func main() {
 	// create a new metrics instance
-	_, err := metrics.NewMetrics()
+	mtx, err := metrics.NewMetrics()
 	if err != nil {
 		panic(err)
 	}
@@ -16,5 +16,5 @@ func main() {
 	metrics.StartMetricsServer(8080)
 
 	// continue to collect metrics
-	runner.Start()
+	runner.Start(mtx)
 }
