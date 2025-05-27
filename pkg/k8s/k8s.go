@@ -1,4 +1,4 @@
-package runner
+package k8s
 
 import (
 	"fmt"
