@@ -5,6 +5,8 @@ import (
 	"github.com/amirhnajafiz/k8sese/pkg/fetch"
 )
 
+// Start initiates the process of fetching storage usage metrics from the kubelet summary endpoint
+// and updates the provided metrics instance with the data.
 func Start(m *metrics.Metrics) {
 	for {
 		// build the HTTP request to the kubelet summary endpoint
