@@ -35,3 +35,8 @@ func NewMetrics() (*Metrics, error) {
 		storageUsageBytes: sub,
 	}, nil
 }
+
+// SetStorageUsageBytes sets the ephemeral storage usage in bytes for a specific pod, namespace, node, and container.
+func (m *Metrics) SetStorageUsageBytes(pod, namespace, node, container string, value float64) {
+	m.storageUsageBytes.WithLabelValues(pod, namespace, node, container).Set(value)
+}
