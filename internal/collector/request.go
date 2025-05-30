@@ -11,9 +11,13 @@ const (
 
 // buildHTTPRequest creates a new HTTP request to the kubelet summary endpoint
 // with the necessary authorization header.
-func buildHTTPRequest() (*http.Request, error) {
+func buildHTTPRequest(endpoint string) (*http.Request, error) {
+	if endpoint == "" {
+		endpoint = kubeletSummaryEndpoint
+	}
+
 	// create a new HTTP request to the kubelet summary endpoint
-	req, err := http.NewRequest("GET", kubeletSummaryEndpoint, nil)
+	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
