@@ -38,7 +38,7 @@ func main() {
 	}
 
 	// start the collector to fetch and update metrics
-	if err := col.Start(); err != nil {
+	if err := col.Start(conf.K8SLocalAPI); err != nil {
 		logger.Fatal("failed to start collector", zap.Error(err))
 	}
 }

@@ -21,9 +21,9 @@ type Collector struct {
 
 // Start initiates the process of fetching storage usage metrics from the kubelet summary endpoint
 // and updates the provided metrics instance with the data.
-func (c *Collector) Start() error {
+func (c *Collector) Start(endpoint string) error {
 	// build the HTTP request to the kubelet summary endpoint
-	req, err := buildHTTPRequest("")
+	req, err := buildHTTPRequest(endpoint)
 	if err != nil {
 		return fmt.Errorf("failed to build HTTP request: %w", err)
 	}
