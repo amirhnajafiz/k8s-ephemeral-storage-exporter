@@ -3,6 +3,7 @@ module github.com/amirhnajafiz/k8sese
 go 1.24.1
 
 require (
+	github.com/caarlos0/env/v10 v10.0.0
 	github.com/prometheus/client_golang v1.22.0
 	go.uber.org/zap v1.27.0
 )
