@@ -3,6 +3,7 @@ package collector
 import (
 	"github.com/amirhnajafiz/k8sese/internal/metrics"
 	"github.com/amirhnajafiz/k8sese/pkg/fetch"
+	"github.com/amirhnajafiz/k8sese/pkg/types"
 )
 
 // Start initiates the process of fetching storage usage metrics from the kubelet summary endpoint
@@ -24,7 +25,7 @@ func Start(m *metrics.Metrics) {
 		}
 
 		// decode the JSON response into a summary structure
-		var summary summary
+		var summary types.Summary
 		if err := fetch.JSON(resp, &summary); err != nil {
 			// handle error (e.g., log it, retry, etc.)
 			continue
