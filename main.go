@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/amirhnajafiz/k8sese/internal/collector"
+	"github.com/amirhnajafiz/k8sese/internal/configs"
 	"github.com/amirhnajafiz/k8sese/internal/logr"
 	"github.com/amirhnajafiz/k8sese/internal/metrics"
 
@@ -11,8 +12,14 @@ import (
 )
 
 func main() {
+	// load the configuration from the environment variables
+	conf, err := configs.LoadConfig()
+	if err != nil {
+		panic(err)
+	}
+
 	// initialize the zap logger
-	logger := logr.NewZapLogger(true)
+	logger := logr.NewZapLogger(conf.Debug)
 
 	// create a new metrics instance
 	mtx, err := metrics.NewMetrics()
@@ -21,13 +28,13 @@ func main() {
 	}
 
 	// start the metrics server on port 8080
-	metrics.StartMetricsServer(logger.Named("metrics-server"), 8080)
+	metrics.StartMetricsServer(logger.Named("metrics-server"), conf.Port)
 
 	// create a new collector instance with the metrics
 	col := &collector.Collector{
 		Logr:     logger.Named("collector"),
 		Metrics:  mtx,
-		Interval: time.Duration(10) * time.Second,
+		Interval: time.Duration(conf.Interval) * time.Second,
 	}
 
 	// start the collector to fetch and update metrics
