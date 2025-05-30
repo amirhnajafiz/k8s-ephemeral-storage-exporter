@@ -37,9 +37,35 @@ func Start(m *metrics.Metrics) {
 				pod.PodRef.Name,
 				pod.PodRef.Namespace,
 				summary.Node.NodeName,
-				"c",
 				float64(pod.EphemeralStorage.UsedBytes),
 			)
+
+			for _, container := range pod.Containers {
+				m.SetContainerStorageUsageBytes(
+					pod.PodRef.Name,
+					pod.PodRef.Namespace,
+					summary.Node.NodeName,
+					container.Name,
+					"memory",
+					float64(container.Memory.UsageBytes),
+				)
+				m.SetContainerStorageUsageBytes(
+					pod.PodRef.Name,
+					pod.PodRef.Namespace,
+					summary.Node.NodeName,
+					container.Name,
+					"logs",
+					float64(container.Logs.UsedBytes),
+				)
+				m.SetContainerStorageUsageBytes(
+					pod.PodRef.Name,
+					pod.PodRef.Namespace,
+					summary.Node.NodeName,
+					container.Name,
+					"rootfs",
+					float64(container.Rootfs.UsedBytes),
+				)
+			}
 		}
 	}
 }
