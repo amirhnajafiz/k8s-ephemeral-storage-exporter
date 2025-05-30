@@ -1,4 +1,4 @@
-package runner
+package collector
 
 import (
 	"github.com/amirhnajafiz/k8sese/internal/metrics"

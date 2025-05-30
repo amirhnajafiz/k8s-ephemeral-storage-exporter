@@ -1,4 +1,4 @@
-package runner
+package collector
 
 // summary represents the structure of the JSON response from the kubelet summary API.
 type summary struct {
