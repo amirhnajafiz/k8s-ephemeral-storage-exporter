@@ -6,9 +6,15 @@ import (
 	"github.com/amirhnajafiz/k8sese/pkg/types"
 )
 
+// Collector is responsible for collecting storage usage metrics from the kubelet summary endpoint
+// and updating the provided metrics instance with the collected data.
+type Collector struct {
+	Metrics *metrics.Metrics
+}
+
 // Start initiates the process of fetching storage usage metrics from the kubelet summary endpoint
 // and updates the provided metrics instance with the data.
-func Start(m *metrics.Metrics) {
+func (c *Collector) Start() {
 	for {
 		// build the HTTP request to the kubelet summary endpoint
 		req, err := buildHTTPRequest()
@@ -33,39 +39,48 @@ func Start(m *metrics.Metrics) {
 
 		// process the summary data and update the metrics
 		for _, pod := range summary.Pods {
-			m.SetStorageUsageBytes(
-				pod.PodRef.Name,
-				pod.PodRef.Namespace,
-				summary.Node.NodeName,
-				float64(pod.EphemeralStorage.UsedBytes),
-			)
-
-			for _, container := range pod.Containers {
-				m.SetContainerStorageUsageBytes(
-					pod.PodRef.Name,
-					pod.PodRef.Namespace,
-					summary.Node.NodeName,
-					container.Name,
-					"memory",
-					float64(container.Memory.UsageBytes),
-				)
-				m.SetContainerStorageUsageBytes(
-					pod.PodRef.Name,
-					pod.PodRef.Namespace,
-					summary.Node.NodeName,
-					container.Name,
-					"logs",
-					float64(container.Logs.UsedBytes),
-				)
-				m.SetContainerStorageUsageBytes(
-					pod.PodRef.Name,
-					pod.PodRef.Namespace,
-					summary.Node.NodeName,
-					container.Name,
-					"rootfs",
-					float64(container.Rootfs.UsedBytes),
-				)
-			}
+			c.setPodStorageUsage(pod, summary.Node.NodeName)
+			c.setContainerStorageUsage(pod, summary.Node.NodeName)
 		}
+	}
+}
+
+// setPodStorageUsage sets the ephemeral storage usage for a pod in the provided metrics instance.
+func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
+	c.Metrics.SetStorageUsageBytes(
+		pod.PodRef.Name,
+		pod.PodRef.Namespace,
+		nodeName,
+		float64(pod.EphemeralStorage.UsedBytes),
+	)
+}
+
+// setContainerStorageUsage sets the storage usage for each container in a pod in the provided metrics instance.
+func (c *Collector) setContainerStorageUsage(pod types.PodSummary, nodeName string) {
+	for _, container := range pod.Containers {
+		c.Metrics.SetContainerStorageUsageBytes(
+			pod.PodRef.Name,
+			pod.PodRef.Namespace,
+			nodeName,
+			container.Name,
+			"memory",
+			float64(container.Memory.UsageBytes),
+		)
+		c.Metrics.SetContainerStorageUsageBytes(
+			pod.PodRef.Name,
+			pod.PodRef.Namespace,
+			nodeName,
+			container.Name,
+			"logs",
+			float64(container.Logs.UsedBytes),
+		)
+		c.Metrics.SetContainerStorageUsageBytes(
+			pod.PodRef.Name,
+			pod.PodRef.Namespace,
+			nodeName,
+			container.Name,
+			"rootfs",
+			float64(container.Rootfs.UsedBytes),
+		)
 	}
 }

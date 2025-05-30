@@ -15,6 +15,11 @@ func main() {
 	// start the metrics server on port 8080
 	metrics.StartMetricsServer(8080)
 
-	// continue to collect metrics
-	collector.Start(mtx)
+	// create a new collector instance with the metrics
+	col := &collector.Collector{
+		Metrics: mtx,
+	}
+
+	// start the collector to fetch and update metrics
+	col.Start()
 }
