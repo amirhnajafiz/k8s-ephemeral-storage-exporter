@@ -1,25 +1,37 @@
 package main
 
 import (
+	"time"
+
 	"github.com/amirhnajafiz/k8sese/internal/collector"
+	"github.com/amirhnajafiz/k8sese/internal/logr"
 	"github.com/amirhnajafiz/k8sese/internal/metrics"
+
+	"go.uber.org/zap"
 )
 
 func main() {
+	// initialize the zap logger
+	logger := logr.NewZapLogger(true)
+
 	// create a new metrics instance
 	mtx, err := metrics.NewMetrics()
 	if err != nil {
-		panic(err)
+		logger.Fatal("failed to create metrics instance", zap.Error(err))
 	}
 
 	// start the metrics server on port 8080
-	metrics.StartMetricsServer(8080)
+	metrics.StartMetricsServer(logger.Named("metrics-server"), 8080)
 
 	// create a new collector instance with the metrics
 	col := &collector.Collector{
-		Metrics: mtx,
+		Logr:     logger.Named("collector"),
+		Metrics:  mtx,
+		Interval: time.Duration(10) * time.Second,
 	}
 
 	// start the collector to fetch and update metrics
-	col.Start()
+	if err := col.Start(); err != nil {
+		logger.Fatal("failed to start collector", zap.Error(err))
+	}
 }

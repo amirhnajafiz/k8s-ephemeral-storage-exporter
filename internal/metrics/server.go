@@ -20,7 +20,7 @@ func StartMetricsServer(logr *zap.Logger, port int) {
 
 		// start the server
 		if err := http.ListenAndServe(addr, nil); err != nil {
-			logr.Error("failed to start metrics server", zap.Error(err))
+			logr.Fatal("failed to start metrics server", zap.Error(err))
 		}
 	}()
 }
