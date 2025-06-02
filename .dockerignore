@@ -1,4 +1,14 @@
-Dockerfile
-docker-compose.yaml
+# Dockerfiles
+build/
+
+# Workflows
+.github/
+.git/
+
+# Manifests
+k8s/
+
+# Git
 .gitignore
+LICENSE
 README.md
