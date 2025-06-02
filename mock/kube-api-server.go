@@ -23,6 +23,8 @@ func main() {
 		if err := json.NewEncoder(w).Encode(json.RawMessage(mustReadAll(f))); err != nil {
 			http.Error(w, "could not encode json", http.StatusInternalServerError)
 		}
+
+		log.Println("Handled /stats/summary request")
 	})
 
 	log.Println("Mock kubelet API server running on :10250")
