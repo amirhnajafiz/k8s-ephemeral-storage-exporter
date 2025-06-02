@@ -26,7 +26,7 @@ func main() {
 	})
 
 	log.Println("Mock kubelet API server running on :10250")
-	log.Fatal(http.ListenAndServe(":10250", nil))
+	log.Fatal(http.ListenAndServeTLS(":10250", "mock/server.crt", "mock/server.key", nil))
 }
 
 func mustReadAll(f *os.File) []byte {
