@@ -1,0 +1,21 @@
+{
+    "variable": {
+      "TAG": {
+        "default": "latest"
+      }
+    },
+    "group": {
+      "default": {
+        "targets": ["ephemeral-storage-metrics-exporter"]
+      }
+    },
+    "target": {
+      "ephemeral-storage-metrics-exporter": {
+        "context": ".",
+        "dockerfile": "build/Dockerfile",
+        "tags": ["ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:${TAG}"],
+        "output": ["type=registry"]
+      }
+    }
+  }
+  
