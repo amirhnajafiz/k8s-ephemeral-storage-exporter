@@ -18,7 +18,7 @@ func main() {
 		panic(err)
 	}
 
-	// initialize the zap logger
+	// initialize a zap logger
 	logger := logr.NewZapLogger(conf.Debug)
 
 	// create a new metrics instance

@@ -1,6 +1,8 @@
 package configs
 
 import (
+	"fmt"
+
 	"github.com/caarlos0/env/v10"
 )
 
@@ -16,7 +18,7 @@ type Config struct {
 func LoadConfig() (*Config, error) {
 	cfg := Config{}
 	if err := env.Parse(&cfg); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse environment variables: %w", err)
 	}
 
 	return &cfg, nil
