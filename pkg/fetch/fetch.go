@@ -5,15 +5,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"golang.org/x/net/http2"
 )
 
 // GET performs an HTTP GET request using the provided request object.
 func GET(req *http.Request) (*http.Response, error) {
-	client := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
+
+	http2.ConfigureTransport(tr)
+
+	client := &http.Client{Transport: tr}
 
 	resp, err := client.Do(req)
 	if err != nil {

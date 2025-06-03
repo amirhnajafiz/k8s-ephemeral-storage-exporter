@@ -22,5 +22,7 @@ func buildHTTPRequest(endpoint string) (*http.Request, error) {
 		return nil, err
 	}
 
+	req.Header.Set("Accept", "application/json")
+
 	return req, nil
 }
