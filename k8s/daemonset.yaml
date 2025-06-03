@@ -23,7 +23,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: exporter
-          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:latest
+          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:v0.0.1
           ports:
             - containerPort: 8080
               name: metrics
