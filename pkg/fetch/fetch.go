@@ -5,17 +5,31 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+)
 
-	"golang.org/x/net/http2"
+const (
+	// kubeletClientCert and key files for the kubelet client.
+	certFile = "/var/lib/kubelet/pki/kubelet-client-current.pem"
+	keyFile  = "/var/lib/kubelet/pki/kubelet-client-current.pem"
 )
 
 // GET performs an HTTP GET request using the provided request object.
 func GET(req *http.Request) (*http.Response, error) {
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	// load client cert
+	cert, err := tls.LoadX509KeyPair(certFile, keyFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load client cert/key: %w", err)
 	}
 
-	http2.ConfigureTransport(tr)
+	// create TLS config with InsecureSkipVerify
+	tlsConfig := &tls.Config{
+		Certificates:       []tls.Certificate{cert},
+		InsecureSkipVerify: true,
+	}
+
+	tr := &http.Transport{
+		TLSClientConfig: tlsConfig,
+	}
 
 	client := &http.Client{Transport: tr}
 
