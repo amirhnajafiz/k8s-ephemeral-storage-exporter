@@ -1,0 +1,23 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: ephemeral-storage-exporter-service-monitor
+    app.kubernetes.io/name: ephemeral-storage-exporter
+  name: ephemeral-storage-exporter
+  namespace: kube-system
+spec:
+  endpoints:
+  - honorLabels: false
+    interval: 10s
+    path: /metrics
+    port: metrics
+    relabelings: []
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: ephemeral-storage-exporter-service
+      app.kubernetes.io/name: ephemeral-storage-exporter
