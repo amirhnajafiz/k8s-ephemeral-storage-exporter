@@ -20,10 +20,9 @@ spec:
         app.kubernetes.io/name: ephemeral-storage-exporter
     spec:
       hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: exporter
-          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:v0.0.2
+          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:v0.0.3
           ports:
             - containerPort: 8080
               name: metrics
@@ -42,4 +41,13 @@ spec:
             limits:
               cpu: 100m
               memory: 128Mi
+          volumeMounts:
+            - name: kubelet-pki
+              mountPath: /var/lib/kubelet/pki
+              readOnly: true
+      volumes:
+        - name: kubelet-pki
+          hostPath:
+            path: /var/lib/kubelet/pki
+            type: Directory
       terminationGracePeriodSeconds: 30
