@@ -11,6 +11,7 @@ type Config struct {
 	Port        int    `env:"K8SESE_PORT" envDefault:"8080"`
 	Debug       bool   `env:"K8SESE_DEBUG" envDefault:"false"`
 	Interval    int    `env:"K8SESE_INTERVAL" envDefault:"10"` // in seconds
+	JSONLog     bool   `env:"K8SESE_JSON_LOG" envDefault:"false"`
 	K8SLocalAPI string `env:"K8SESE_K8S_LOCAL_API" envDefault:""`
 }
 

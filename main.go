@@ -19,7 +19,7 @@ func main() {
 	}
 
 	// initialize a zap logger
-	logger := logr.NewZapLogger(conf.Debug)
+	logger := logr.NewZapLogger(conf.Debug, conf.JSONLog)
 
 	// create a new metrics instance
 	mtx, err := metrics.NewMetrics()
