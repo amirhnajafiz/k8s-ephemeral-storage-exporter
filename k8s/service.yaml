@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ephemeral-storage-exporter
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/component: ephemeral-storage-exporter-service
+    app.kubernetes.io/name: ephemeral-storage-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/component: ephemeral-storage-exporter
+    app.kubernetes.io/name: ephemeral-storage-exporter

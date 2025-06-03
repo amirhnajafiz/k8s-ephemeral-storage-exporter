@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -5,18 +6,18 @@ metadata:
   namespace: kube-system
   labels:
     app: ephemeral-storage-exporter
+    kubernetes.io/component: ephemeral-storage-exporter
     kubernetes.io/name: ephemeral-storage-exporter
-    kubernetes.io/app: ephemeral-storage-exporter
 spec:
   selector:
     matchLabels:
-      kubernetes.io/name: ephemeral-storage-exporter
-      kubernetes.io/app: ephemeral-storage-exporter
+      app.kubernetes.io/component: ephemeral-storage-exporter
+      app.kubernetes.io/name: ephemeral-storage-exporter
   template:
     metadata:
       labels:
-        kubernetes.io/name: ephemeral-storage-exporter
-        kubernetes.io/app: ephemeral-storage-exporter
+        app.kubernetes.io/component: ephemeral-storage-exporter
+        app.kubernetes.io/name: ephemeral-storage-exporter
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
@@ -25,6 +26,8 @@ spec:
           image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:latest
           ports:
             - containerPort: 8080
+              name: metrics
+              protocol: TCP
           env:
             - name: K8SESE_PORT
               value: 8080
