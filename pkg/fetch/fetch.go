@@ -14,6 +14,7 @@ func GET(req *http.Request) (*http.Response, error) {
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
 	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err

@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netshoot
+  namespace: default
+spec:
+  hostNetwork: true
+  containers:
+    - name: netshoot
+      image: nicolaka/netshoot
+      command: ["sleep", "3600"]
+  restartPolicy: Never

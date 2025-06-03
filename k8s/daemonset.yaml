@@ -23,18 +23,18 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: exporter
-          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:v0.0.1
+          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:v0.0.2
           ports:
             - containerPort: 8080
               name: metrics
               protocol: TCP
           env:
             - name: K8SESE_PORT
-              value: 8080
+              value: "8080"
             - name: K8SESE_DEBUG
-              value: false
+              value: "false"
             - name: K8SESE_INTERVAL
-              value: 10
+              value: "10"
           resources:
             requests:
               cpu: 50m
