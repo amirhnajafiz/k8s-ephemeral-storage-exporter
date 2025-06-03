@@ -5,20 +5,33 @@ metadata:
   namespace: kube-system
   labels:
     app: ephemeral-storage-exporter
+    kubernetes.io/name: ephemeral-storage-exporter
+    kubernetes.io/app: ephemeral-storage-exporter
 spec:
   selector:
     matchLabels:
-      app: ephemeral-storage-exporter
+      kubernetes.io/name: ephemeral-storage-exporter
+      kubernetes.io/app: ephemeral-storage-exporter
   template:
     metadata:
       labels:
-        app: ephemeral-storage-exporter
+        kubernetes.io/name: ephemeral-storage-exporter
+        kubernetes.io/app: ephemeral-storage-exporter
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: exporter
-          image: your-dockerhub-username/ephemeral-storage-exporter:latest
+          image: ghcr.io/amirhnajafiz/ephemeral-storage-metrics-exporter:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: K8SESE_PORT
+              value: 8080
+            - name: K8SESE_DEBUG
+              value: false
+            - name: K8SESE_INTERVAL
+              value: 10
           resources:
             requests:
               cpu: 50m
@@ -26,9 +39,4 @@ spec:
             limits:
               cpu: 100m
               memory: 128Mi
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 3000
-            allowPrivilegeEscalation: false
-      serviceAccountName: default
       terminationGracePeriodSeconds: 30
