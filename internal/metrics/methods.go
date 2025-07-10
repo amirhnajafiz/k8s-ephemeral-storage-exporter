@@ -29,3 +29,13 @@ func (m *Metrics) SetContainerMemoryValues(
 	m.containerMemoryAvailableBytes.WithLabelValues(pod, namespace, node, uid, container).Set(available)
 	m.containerMemoryCapacityBytes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
 }
+
+// SetContainerRootfsValues sets the root filesystem metrics for a specific container in a pod, namespace, and node.
+func (m *Metrics) SetContainerRootfsValues(
+	pod, namespace, node, uid, container string,
+	used, available, capacity float64,
+) {
+	m.containerRootfsUsageBytes.WithLabelValues(pod, namespace, node, uid, container).Set(used)
+	m.containerRootfsAvailableBytes.WithLabelValues(pod, namespace, node, uid, container).Set(available)
+	m.containerRootfsCapacityBytes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
+}
