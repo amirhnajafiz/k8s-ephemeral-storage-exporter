@@ -20,7 +20,12 @@ type PodSummary struct {
 	} `json:"podRef"`
 	Containers       []ContainerSummary `json:"containers"`
 	EphemeralStorage struct {
-		UsedBytes uint64 `json:"usedBytes"`
+		AvailableBytes uint64 `json:"availableBytes"`
+		CapacityBytes  uint64 `json:"capacityBytes"`
+		UsedBytes      uint64 `json:"usedBytes"`
+		Inodes         uint64 `json:"inodes"`
+		InodesFree     uint64 `json:"inodesFree"`
+		InodesUsed     uint64 `json:"inodesUsed"`
 	} `json:"ephemeral-storage"`
 }
 
@@ -28,12 +33,24 @@ type PodSummary struct {
 type ContainerSummary struct {
 	Name   string `json:"name"`
 	Memory struct {
-		UsageBytes uint64 `json:"usageBytes"`
+		AvailableBytes uint64 `json:"availableBytes"`
+		CapacityBytes  uint64 `json:"capacityBytes"`
+		UsageBytes     uint64 `json:"usageBytes"`
 	} `json:"memory"`
 	Rootfs struct {
-		UsedBytes uint64 `json:"usedBytes"`
+		AvailableBytes uint64 `json:"availableBytes"`
+		CapacityBytes  uint64 `json:"capacityBytes"`
+		UsedBytes      uint64 `json:"usedBytes"`
+		Inodes         uint64 `json:"inodes"`
+		InodesFree     uint64 `json:"inodesFree"`
+		InodesUsed     uint64 `json:"inodesUsed"`
 	} `json:"rootfs"`
 	Logs struct {
-		UsedBytes uint64 `json:"usedBytes"`
+		AvailableBytes uint64 `json:"availableBytes"`
+		CapacityBytes  uint64 `json:"capacityBytes"`
+		UsedBytes      uint64 `json:"usedBytes"`
+		Inodes         uint64 `json:"inodes"`
+		InodesFree     uint64 `json:"inodesFree"`
+		InodesUsed     uint64 `json:"inodesUsed"`
 	} `json:"logs"`
 }
