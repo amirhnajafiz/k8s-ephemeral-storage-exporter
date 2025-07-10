@@ -74,6 +74,15 @@ func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
 		float64(pod.EphemeralStorage.AvailableBytes),
 		float64(pod.EphemeralStorage.CapacityBytes),
 	)
+	c.Metrics.SetEphemeralStorageInodes(
+		pod.PodRef.Name,
+		pod.PodRef.Namespace,
+		nodeName,
+		pod.PodRef.UID,
+		float64(pod.EphemeralStorage.InodesUsed),
+		float64(pod.EphemeralStorage.InodesFree),
+		float64(pod.EphemeralStorage.Inodes),
+	)
 }
 
 // setContainerStorageUsage sets the storage usage for each container in a pod in the provided metrics instance.
