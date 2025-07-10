@@ -19,3 +19,13 @@ func (m *Metrics) SetEphemeralStorageInodes(
 	m.ephemeralStorageInodesUsed.WithLabelValues(pod, namespace, node, uid).Set(used)
 	m.ephemeralStorageInodes.WithLabelValues(pod, namespace, node, uid).Set(capacity)
 }
+
+// SetContainerMemoryValues sets the memory metrics for a specific container in a pod, namespace, and node.
+func (m *Metrics) SetContainerMemoryValues(
+	pod, namespace, node, uid, container string,
+	used, available, capacity float64,
+) {
+	m.containerMemoryUsageBytes.WithLabelValues(pod, namespace, node, uid, container).Set(used)
+	m.containerMemoryAvailableBytes.WithLabelValues(pod, namespace, node, uid, container).Set(available)
+	m.containerMemoryCapacityBytes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
+}

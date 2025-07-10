@@ -88,29 +88,15 @@ func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
 // setContainerStorageUsage sets the storage usage for each container in a pod in the provided metrics instance.
 func (c *Collector) setContainerStorageUsage(pod types.PodSummary, nodeName string) {
 	for _, container := range pod.Containers {
-		c.Metrics.SetContainerStorageUsageBytes(
+		c.Metrics.SetContainerMemoryValues(
 			pod.PodRef.Name,
 			pod.PodRef.Namespace,
 			nodeName,
+			pod.PodRef.UID,
 			container.Name,
-			"memory",
 			float64(container.Memory.UsageBytes),
-		)
-		c.Metrics.SetContainerStorageUsageBytes(
-			pod.PodRef.Name,
-			pod.PodRef.Namespace,
-			nodeName,
-			container.Name,
-			"logs",
-			float64(container.Logs.UsedBytes),
-		)
-		c.Metrics.SetContainerStorageUsageBytes(
-			pod.PodRef.Name,
-			pod.PodRef.Namespace,
-			nodeName,
-			container.Name,
-			"rootfs",
-			float64(container.Rootfs.UsedBytes),
+			float64(container.Memory.AvailableBytes),
+			float64(container.Memory.CapacityBytes),
 		)
 	}
 }

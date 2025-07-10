@@ -73,5 +73,23 @@ func NewMetrics() (*Metrics, error) {
 			Name:      "ephemeral_storage_inodes_used",
 			Help:      "Ephemeral storage used inodes",
 		}, []string{"pod", "namespace", "node", "uid"}),
+		containerMemoryAvailableBytes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_memory_available_bytes",
+			Help:      "Container memory available in bytes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerMemoryCapacityBytes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_memory_capacity_bytes",
+			Help:      "Container memory capacity in bytes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerMemoryUsageBytes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_memory_usage_bytes",
+			Help:      "Container memory usage in bytes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
 	}, nil
 }
