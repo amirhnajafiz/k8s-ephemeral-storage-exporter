@@ -145,5 +145,23 @@ func NewMetrics() (*Metrics, error) {
 			Name:      "container_logs_usage_bytes",
 			Help:      "Container logs usage in bytes",
 		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerLogsInodes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_logs_inodes",
+			Help:      "Container logs inodes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerLogsInodesFree: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_logs_inodes_free",
+			Help:      "Container logs free inodes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerLogsInodesUsed: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_logs_inodes_used",
+			Help:      "Container logs used inodes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
 	}, nil
 }
