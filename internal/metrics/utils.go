@@ -10,6 +10,7 @@ import (
 func newGaugeVec(opt prometheus.GaugeOpts, labels []string) *prometheus.GaugeVec {
 	ev := prometheus.NewGaugeVec(opt, labels)
 
+	// register the GaugeVec with Prometheus
 	err := prometheus.Register(ev)
 	if err != nil {
 		var are prometheus.AlreadyRegisteredError

@@ -65,6 +65,7 @@ func (c *Collector) Start(endpoint string) error {
 
 // setPodStorageUsage sets the ephemeral storage usage for a pod in the provided metrics instance.
 func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
+	// set the ephemeral storage usage for the pod
 	c.Metrics.SetEphemeralStorageValues(
 		pod.PodRef.Name,
 		pod.PodRef.Namespace,
@@ -74,6 +75,8 @@ func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
 		float64(pod.EphemeralStorage.AvailableBytes),
 		float64(pod.EphemeralStorage.CapacityBytes),
 	)
+
+	// set the ephemeral storage inodes for the pod
 	c.Metrics.SetEphemeralStorageInodes(
 		pod.PodRef.Name,
 		pod.PodRef.Namespace,
@@ -88,6 +91,7 @@ func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
 // setContainerStorageUsage sets the storage usage for each container in a pod in the provided metrics instance.
 func (c *Collector) setContainerStorageUsage(pod types.PodSummary, nodeName string) {
 	for _, container := range pod.Containers {
+		// set the memory usage for the container
 		c.Metrics.SetContainerMemoryValues(
 			pod.PodRef.Name,
 			pod.PodRef.Namespace,
@@ -98,6 +102,8 @@ func (c *Collector) setContainerStorageUsage(pod types.PodSummary, nodeName stri
 			float64(container.Memory.AvailableBytes),
 			float64(container.Memory.CapacityBytes),
 		)
+
+		// set the root filesystem usage for the container
 		c.Metrics.SetContainerRootfsValues(
 			pod.PodRef.Name,
 			pod.PodRef.Namespace,
@@ -118,6 +124,8 @@ func (c *Collector) setContainerStorageUsage(pod types.PodSummary, nodeName stri
 			float64(container.Rootfs.InodesFree),
 			float64(container.Rootfs.Inodes),
 		)
+
+		// set the logs usage for the container
 		c.Metrics.SetContainerLogsValues(
 			pod.PodRef.Name,
 			pod.PodRef.Namespace,

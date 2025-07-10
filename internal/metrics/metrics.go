@@ -35,7 +35,7 @@ type Metrics struct {
 
 // NewMetrics initializes and registers the Prometheus metrics for the exporter.
 func NewMetrics() (*Metrics, error) {
-	// create Prometheus metrics
+	// create Prometheus metrics using the newGaugeVec helper function in utils.go
 	return &Metrics{
 		ephemeralStorageAvailableBytes: newGaugeVec(prometheus.GaugeOpts{
 			Namespace: NS,
