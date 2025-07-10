@@ -65,11 +65,14 @@ func (c *Collector) Start(endpoint string) error {
 
 // setPodStorageUsage sets the ephemeral storage usage for a pod in the provided metrics instance.
 func (c *Collector) setPodStorageUsage(pod types.PodSummary, nodeName string) {
-	c.Metrics.SetStorageUsageBytes(
+	c.Metrics.SetEphemeralStorageValues(
 		pod.PodRef.Name,
 		pod.PodRef.Namespace,
 		nodeName,
+		pod.PodRef.UID,
 		float64(pod.EphemeralStorage.UsedBytes),
+		float64(pod.EphemeralStorage.AvailableBytes),
+		float64(pod.EphemeralStorage.CapacityBytes),
 	)
 }
 
