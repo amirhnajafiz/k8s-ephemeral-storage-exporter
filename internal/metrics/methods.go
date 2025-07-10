@@ -49,3 +49,13 @@ func (m *Metrics) SetContainerRootfsInodes(
 	m.containerRootfsInodesFree.WithLabelValues(pod, namespace, node, uid, container).Set(available)
 	m.containerRootfsInodes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
 }
+
+// SetContainerLogsValues sets the logs metrics for a specific container in a pod, namespace, and node.
+func (m *Metrics) SetContainerLogsValues(
+	pod, namespace, node, uid, container string,
+	used, available, capacity float64,
+) {
+	m.containerLogsUsageBytes.WithLabelValues(pod, namespace, node, uid, container).Set(used)
+	m.containerLogsAvailableBytes.WithLabelValues(pod, namespace, node, uid, container).Set(available)
+	m.containerLogsCapacityBytes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
+}

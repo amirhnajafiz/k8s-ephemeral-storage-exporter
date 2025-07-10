@@ -118,5 +118,15 @@ func (c *Collector) setContainerStorageUsage(pod types.PodSummary, nodeName stri
 			float64(container.Rootfs.InodesFree),
 			float64(container.Rootfs.Inodes),
 		)
+		c.Metrics.SetContainerLogsValues(
+			pod.PodRef.Name,
+			pod.PodRef.Namespace,
+			nodeName,
+			pod.PodRef.UID,
+			container.Name,
+			float64(container.Logs.UsedBytes),
+			float64(container.Logs.AvailableBytes),
+			float64(container.Logs.CapacityBytes),
+		)
 	}
 }
