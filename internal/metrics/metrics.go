@@ -10,52 +10,68 @@ const (
 
 // Metrics holds the Prometheus metrics for the exporter.
 type Metrics struct {
-	ephemeralStorageUsageBytes *prometheus.GaugeVec
-	containerStorageUsageBytes *prometheus.GaugeVec
+	ephemeralStorageAvailableBytes *prometheus.GaugeVec
+	ephemeralStorageCapacityBytes  *prometheus.GaugeVec
+	ephemeralStorageUsageBytes     *prometheus.GaugeVec
+	ephemeralStorageInodes         *prometheus.GaugeVec
+	ephemeralStorageInodesFree     *prometheus.GaugeVec
+	ephemeralStorageInodesUsed     *prometheus.GaugeVec
+	containerMemoryAvailableBytes  *prometheus.GaugeVec
+	containerMemoryCapacityBytes   *prometheus.GaugeVec
+	containerMemoryUsageBytes      *prometheus.GaugeVec
+	containerRootfsAvailableBytes  *prometheus.GaugeVec
+	containerRootfsCapacityBytes   *prometheus.GaugeVec
+	containerRootfsUsageBytes      *prometheus.GaugeVec
+	containerRootfsInodes          *prometheus.GaugeVec
+	containerRootfsInodesFree      *prometheus.GaugeVec
+	containerRootfsInodesUsed      *prometheus.GaugeVec
+	containerLogsAvailableBytes    *prometheus.GaugeVec
+	containerLogsCapacityBytes     *prometheus.GaugeVec
+	containerLogsUsageBytes        *prometheus.GaugeVec
+	containerLogsInodes            *prometheus.GaugeVec
+	containerLogsInodesFree        *prometheus.GaugeVec
+	containerLogsInodesUsed        *prometheus.GaugeVec
 }
 
 // NewMetrics initializes and registers the Prometheus metrics for the exporter.
 func NewMetrics() (*Metrics, error) {
 	// create Prometheus metrics
-	esub := prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{
+	return &Metrics{
+		ephemeralStorageAvailableBytes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "ephemeral_storage_available_bytes",
+			Help:      "Ephemeral storage available in bytes",
+		}, []string{"pod", "namespace", "node", "uid"}),
+		ephemeralStorageCapacityBytes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "ephemeral_storage_capacity_bytes",
+			Help:      "Ephemeral storage capacity in bytes",
+		}, []string{"pod", "namespace", "node", "uid"}),
+		ephemeralStorageUsageBytes: newGaugeVec(prometheus.GaugeOpts{
 			Namespace: NS,
 			Subsystem: SS,
 			Name:      "ephemeral_storage_usage_bytes",
 			Help:      "Ephemeral storage usage in bytes",
-		},
-		[]string{"pod", "namespace", "node"},
-	)
-	cmub := prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{
+		}, []string{"pod", "namespace", "node", "uid"}),
+		ephemeralStorageInodes: newGaugeVec(prometheus.GaugeOpts{
 			Namespace: NS,
 			Subsystem: SS,
-			Name:      "container_storage_usage_bytes",
-			Help:      "Container storage (memory, logs, and roofs) usage in bytes",
-		},
-		[]string{"pod", "namespace", "node", "container", "type"},
-	)
-
-	// register the metrics with Prometheus
-	if err := prometheus.Register(esub); err != nil {
-		return nil, err
-	}
-	if err := prometheus.Register(cmub); err != nil {
-		return nil, err
-	}
-
-	return &Metrics{
-		ephemeralStorageUsageBytes: esub,
-		containerStorageUsageBytes: cmub,
+			Name:      "ephemeral_storage_inodes",
+			Help:      "Ephemeral storage inodes",
+		}, []string{"pod", "namespace", "node", "uid"}),
+		ephemeralStorageInodesFree: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "ephemeral_storage_inodes_free",
+			Help:      "Ephemeral storage free inodes",
+		}, []string{"pod", "namespace", "node", "uid"}),
+		ephemeralStorageInodesUsed: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "ephemeral_storage_inodes_used",
+			Help:      "Ephemeral storage used inodes",
+		}, []string{"pod", "namespace", "node", "uid"}),
 	}, nil
-}
-
-// SetStorageUsageBytes sets the ephemeral storage usage in bytes for a specific pod, namespace, and node.
-func (m *Metrics) SetStorageUsageBytes(pod, namespace, node string, value float64) {
-	m.ephemeralStorageUsageBytes.WithLabelValues(pod, namespace, node).Set(value)
-}
-
-// SetContainerStorageUsageBytes sets the storage usage in bytes for a specific container in a pod, namespace, and node.
-func (m *Metrics) SetContainerStorageUsageBytes(pod, namespace, node, container, typ string, value float64) {
-	m.containerStorageUsageBytes.WithLabelValues(pod, namespace, node, container, typ).Set(value)
 }
