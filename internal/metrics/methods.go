@@ -15,8 +15,8 @@ func (m *Metrics) SetEphemeralStorageInodes(
 	pod, namespace, node, uid string,
 	used, available, capacity float64,
 ) {
-	m.ephemeralStorageInodesFree.WithLabelValues(pod, namespace, node, uid).Set(available)
 	m.ephemeralStorageInodesUsed.WithLabelValues(pod, namespace, node, uid).Set(used)
+	m.ephemeralStorageInodesFree.WithLabelValues(pod, namespace, node, uid).Set(available)
 	m.ephemeralStorageInodes.WithLabelValues(pod, namespace, node, uid).Set(capacity)
 }
 
@@ -38,4 +38,14 @@ func (m *Metrics) SetContainerRootfsValues(
 	m.containerRootfsUsageBytes.WithLabelValues(pod, namespace, node, uid, container).Set(used)
 	m.containerRootfsAvailableBytes.WithLabelValues(pod, namespace, node, uid, container).Set(available)
 	m.containerRootfsCapacityBytes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
+}
+
+// SetContainerRootfsInodes sets the root filesystem inode metrics for a specific container in a pod, namespace, and node.
+func (m *Metrics) SetContainerRootfsInodes(
+	pod, namespace, node, uid, container string,
+	used, available, capacity float64,
+) {
+	m.containerRootfsInodesUsed.WithLabelValues(pod, namespace, node, uid, container).Set(used)
+	m.containerRootfsInodesFree.WithLabelValues(pod, namespace, node, uid, container).Set(available)
+	m.containerRootfsInodes.WithLabelValues(pod, namespace, node, uid, container).Set(capacity)
 }

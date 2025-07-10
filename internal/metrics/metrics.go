@@ -109,5 +109,23 @@ func NewMetrics() (*Metrics, error) {
 			Name:      "container_rootfs_usage_bytes",
 			Help:      "Container root filesystem usage in bytes",
 		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerRootfsInodes: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_rootfs_inodes",
+			Help:      "Container root filesystem inodes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerRootfsInodesFree: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_rootfs_inodes_free",
+			Help:      "Container root filesystem free inodes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
+		containerRootfsInodesUsed: newGaugeVec(prometheus.GaugeOpts{
+			Namespace: NS,
+			Subsystem: SS,
+			Name:      "container_rootfs_inodes_used",
+			Help:      "Container root filesystem used inodes",
+		}, []string{"pod", "namespace", "node", "uid", "container"}),
 	}, nil
 }
