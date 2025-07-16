@@ -1,0 +1,38 @@
+# Default values for local-storage-metrics-exporter.
+fullnameOverride: local-storage-metrics-exporter
+
+# Image configuration
+image:
+  repository: local-storage-metrics-exporter
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+
+# ServiceMonitor configuration
+servicemonitor:
+  enabled: true
+  interval: 10s
+  namespaceSelector: kube-system
+
+# Resources
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+# App configuration
+config:
+  # Port for metrics endpoint
+  port: 8080
+  # Enable debug mode
+  debug: false
+  # Scraping interval in seconds
+  interval: 10

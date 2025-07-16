@@ -1,3 +1,5 @@
+# Local Storage Metrics Exporter Helm Chart
+# This chart deploys a metrics exporter for local storage in Kubernetes clusters.
 apiVersion: v2
 name: local-storage-metrics-exporter
 description: Helm chart for local storage metrics exporter
