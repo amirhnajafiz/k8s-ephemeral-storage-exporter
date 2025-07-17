@@ -3,8 +3,8 @@ fullnameOverride: local-storage-metrics-exporter
 
 # Image configuration
 image:
-  repository: local-storage-metrics-exporter
-  tag: latest
+  repository: ghcr.io/amirhnajafiz/local-storage-metrics-exporter
+  tag: v0.1.0
   pullPolicy: IfNotPresent
 
 # Service configuration
